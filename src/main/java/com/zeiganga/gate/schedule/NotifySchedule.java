@@ -13,15 +13,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotifySchedule {
 
+    private static Boolean notified = false;
+
     /**
      * 测试通知
      */
     @Scheduled(cron = "0 0 3 * * ?")
     public void testNotify() {
+        if (notified) {// 不重复通知
+            return;
+        }
+
         for (int i = 0; i < 10; i++) {
             String content = "起床尿尿了！";
             boolean atAll = true;
             MachineMessageSender.sendSimpleMessage(MachineMessageSender.EATING_GROUP_MACHINE_WEBHOOK, content, atAll);
         }
+        notified = true;
     }
 }
