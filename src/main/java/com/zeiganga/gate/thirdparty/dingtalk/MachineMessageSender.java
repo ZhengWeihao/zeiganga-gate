@@ -1,8 +1,13 @@
 package com.zeiganga.gate.thirdparty.dingtalk;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import com.zeiganga.gate.util.HttpRequestUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * 钉钉机器人消息
@@ -15,6 +20,8 @@ public class MachineMessageSender {
     private MachineMessageSender() {
         super();
     }
+
+    private static final Logger logger = LoggerFactory.getLogger(MachineMessageSender.class);
 
     public static final String EATING_GROUP_MACHINE_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=a4c9f7382794f8c41505fb8fef03243382ec77f2f15ad1a2ec861ccfecef5b3b";// 吃饭小组测试机器人
 
@@ -45,6 +52,10 @@ public class MachineMessageSender {
         }
 
         JSONObject textMessage = getTextMessage(content, atAll);
-        HttpRequestUtil.sendPost(webhook, textMessage.toJSONString());
+        Map<String, String> header = Maps.newHashMap();
+        header.put("Content-Type", "application/json; charset=UTF-8");
+        String response = HttpRequestUtil.sendPost(webhook, header, textMessage.toJSONString());
+        logger.info("发送钉钉消息完成，response：{}", response);
     }
+
 }
