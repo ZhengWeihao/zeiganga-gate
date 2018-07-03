@@ -15,13 +15,13 @@ import java.util.Map;
  * Date: 2018/6/30
  * Time: 15:42
  **/
-public class MachineMessageSender {
+public class DingtalkMessageSender {
 
-    private MachineMessageSender() {
+    private DingtalkMessageSender() {
         super();
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(MachineMessageSender.class);
+    private static final Logger logger = LoggerFactory.getLogger(DingtalkMessageSender.class);
 
     public static final String EATING_GROUP_MACHINE_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=a4c9f7382794f8c41505fb8fef03243382ec77f2f15ad1a2ec861ccfecef5b3b";// 吃饭小组测试机器人
 
