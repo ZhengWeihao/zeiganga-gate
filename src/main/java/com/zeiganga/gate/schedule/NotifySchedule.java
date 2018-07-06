@@ -52,7 +52,8 @@ public class NotifySchedule {
         } else {
             String type = weather.getType();
             if (type.contains("雨")) {
-                String content = "明天天气：" + type + "，" + weather.getNotice();
+                String content = "明天天气：" + type + "，" + weather.getFx() + " " + weather.getFl() + "，最低温度"
+                        + weather.getLow() + "，" + weather.getNotice();
                 DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.EATING_GROUP_MACHINE_WEBHOOK, content, true);
             }
         }
