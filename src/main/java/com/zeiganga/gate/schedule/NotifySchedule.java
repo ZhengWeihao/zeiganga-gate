@@ -2,6 +2,7 @@ package com.zeiganga.gate.schedule;
 
 import com.zeiganga.gate.thirdparty.dingtalk.DingtalkMessageSender;
 import com.zeiganga.gate.thirdparty.weather.Weather;
+import com.zeiganga.gate.thirdparty.weather.WeatherHelper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class NotifySchedule {
     /**
      * 检查次日天气是否为雨天
      */
-    public void checkRanyWeather(boolean retry) {
+    public static void checkRanyWeather(boolean retry) {
         if (!retry) {
             RETRY_TIME = 0;
         } else if (++RETRY_TIME <= RETRY_MAX_TIME) {// 超过最大重试次数
@@ -40,7 +41,7 @@ public class NotifySchedule {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        Weather weather = null;// WeatherHelper.getByCityNameAndDate("杭州", calendar.getTime());
+        Weather weather = WeatherHelper.getByCityNameAndDate("杭州", calendar.getTime());
         if (weather == null) {// 尝试重试
             try {
                 Thread.sleep(RETRY_INTERVAL);
