@@ -2,6 +2,7 @@ package com.zeiganga.gate.controller;
 
 import com.google.common.collect.Maps;
 import com.zeiganga.gate.enums.HttpResponseEnum;
+import com.zeiganga.gate.logger.CustomLogger;
 import com.zeiganga.gate.util.DateUtil;
 import com.zeiganga.gate.vo.common.HttpResponseVO;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("hello")
 public class HelloController {
+
+    private static final CustomLogger logger = CustomLogger.getLogger(HelloController.class);
 
     /**
      * 检查服务是否完成启动
