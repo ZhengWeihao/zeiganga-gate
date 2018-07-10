@@ -1,5 +1,7 @@
 package com.zeiganga.gate.schedule;
 
+import com.alibaba.fastjson.JSON;
+import com.zeiganga.gate.logger.CustomLogger;
 import com.zeiganga.gate.thirdparty.dingtalk.DingtalkMessageSender;
 import com.zeiganga.gate.thirdparty.weather.Weather;
 import com.zeiganga.gate.thirdparty.weather.WeatherHelper;
@@ -17,6 +19,8 @@ import java.util.Calendar;
 @Component
 public class NotifySchedule {
 
+    private static final CustomLogger logger = CustomLogger.getLogger(NotifySchedule.class);
+
     private static final int RETRY_MAX_TIME = 10;// 查询失败的最大重试次数
     private static int RETRY_TIME = 0;// 当前重试次数
     private static final long RETRY_INTERVAL = 60000;// 重试间隔时间
@@ -26,6 +30,7 @@ public class NotifySchedule {
      */
     @Scheduled(cron = "0 0 20 * * ?")
     public void weatherNotify() {
+        logger.biz("进行次日天气检查");
         checkRanyWeather(false);
     }
 
@@ -36,6 +41,7 @@ public class NotifySchedule {
         if (!retry) {
             RETRY_TIME = 0;
         } else if (++RETRY_TIME <= RETRY_MAX_TIME) {// 超过最大重试次数
+            logger.biz("达到最大重试次数，放弃，RETRY_TIME：{}，RETRY_MAX_TIME：{}", RETRY_TIME, RETRY_MAX_TIME);
             return;
         }
 
@@ -46,15 +52,17 @@ public class NotifySchedule {
             try {
                 Thread.sleep(RETRY_INTERVAL);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.error("暂停异常：", e);
             }
             checkRanyWeather(true);
         } else {
+            logger.biz("查询到次日天气，weather：{}", JSON.toJSONString(weather));
             String type = weather.getType();
             if (type.contains("雨")) {
                 String content = "明天天气：" + type + "，" + weather.getFx() + " " + weather.getFl() + "，最低温度"
                         + weather.getLow() + "，" + weather.getNotice();
                 DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.EATING_GROUP_MACHINE_WEBHOOK, content, true);
+                logger.biz("完成天气预警通知，content：{}", content);
             }
         }
     }
