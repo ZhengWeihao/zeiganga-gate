@@ -2,6 +2,7 @@ package com.zeiganga.gate.controller;
 
 import com.zeiganga.gate.editor.CustomDateEditor;
 import com.zeiganga.gate.enums.HttpResponseEnum;
+import com.zeiganga.gate.logger.CustomLogger;
 import com.zeiganga.gate.vo.common.HttpResponseVO;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,12 +22,15 @@ import java.util.Date;
 @ControllerAdvice
 public class BaseController {
 
+    private CustomLogger logger = CustomLogger.getLogger(BaseController.class);
+
     /**
      * 异常处理
      */
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public HttpResponseVO exceptionHandler(NativeWebRequest request, Exception e) {
+        logger.error("Controller处理异常：", e);
         return new HttpResponseVO(false, HttpResponseEnum.EXCEPTION.name(), e.getMessage());
     }
 
