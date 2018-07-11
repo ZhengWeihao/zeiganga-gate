@@ -5,6 +5,7 @@ import com.zeiganga.gate.logger.CustomLogger;
 import com.zeiganga.gate.thirdparty.dingtalk.DingtalkMessageSender;
 import com.zeiganga.gate.thirdparty.weather.Weather;
 import com.zeiganga.gate.thirdparty.weather.WeatherHelper;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Calendar;
  * Time: 16:01:08
  */
 @Component
+@EnableScheduling
 public class NotifySchedule {
 
     private static final CustomLogger logger = CustomLogger.getLogger(NotifySchedule.class);

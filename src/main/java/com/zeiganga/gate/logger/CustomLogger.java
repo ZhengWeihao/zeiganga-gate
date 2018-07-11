@@ -19,13 +19,13 @@ public class CustomLogger {
 
     private static final Level LEVEL_BIZ = null;
 
-    public CustomLogger(Class clazz) {
+    private CustomLogger(Class clazz) {
         super();
         this.logger = LoggerFactory.getLogger(clazz);
         from = clazz.getCanonicalName();
     }
 
-    public CustomLogger(String name) {
+    private CustomLogger(String name) {
         super();
         this.logger = LoggerFactory.getLogger(name);
         from = name;

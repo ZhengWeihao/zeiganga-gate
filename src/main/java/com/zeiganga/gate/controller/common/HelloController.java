@@ -1,4 +1,4 @@
-package com.zeiganga.gate.controller;
+package com.zeiganga.gate.controller.common;
 
 import com.google.common.collect.Maps;
 import com.zeiganga.gate.enums.HttpResponseEnum;
@@ -19,7 +19,7 @@ import java.util.Map;
  * Time: 10:05
  */
 @Controller
-@RequestMapping("hello")
+@RequestMapping("common")
 public class HelloController {
 
     private static final CustomLogger logger = CustomLogger.getLogger(HelloController.class);
@@ -28,15 +28,10 @@ public class HelloController {
      * 检查服务是否完成启动
      */
     @ResponseBody
-    @RequestMapping("isStarted")
-    public HttpResponseVO isStarted(String exceptionTest, Date date) throws Exception {
-        if ("1".equals(exceptionTest)) {
-            throw new Exception("exception test");
-        }
-
-        Map<String, Object> data = Maps.newHashMap();
-        data.put("date", DateUtil.formatDatetime(date));
-
-        return new HttpResponseVO(true, HttpResponseEnum.SUCCESS.name(), HttpResponseEnum.SUCCESS.getMsg(), data);
+    @RequestMapping("started")
+    public HttpResponseVO started() throws Exception {
+        logger.biz("received started request ..");
+        logger.error("received started request ..");
+        return new HttpResponseVO(true, HttpResponseEnum.SUCCESS.name(), HttpResponseEnum.SUCCESS.getMsg());
     }
 }

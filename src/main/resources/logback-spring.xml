@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <property name="contextName" value="zeiganga-gate"/>
-    <property name="logs.path" value="${webapp.root}/logs"/>
+    <property name="logs.path" value="logs"/>
 
     <contextName>${contextName}</contextName>
 
@@ -20,20 +20,19 @@
             <fileNamePattern>${logs.path}/error/error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </layout>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n</pattern>
+        </encoder>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
     </appender>
 
-    <appender name="commonAsync" class="ch.qos.logback.classic.AsyncAppender">
+    <appender name="errorAsync" class="ch.qos.logback.classic.AsyncAppender">
         <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
         <discardingThreshold>0</discardingThreshold>
         <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
         <queueSize>512</queueSize>
-        <appender-ref ref="consoleAppender"/>
         <appender-ref ref="errorAppender"/>
     </appender>
 
@@ -63,6 +62,7 @@
 
     <!--指定最基础的日志输出级别-->
     <root level="INFO">
-        <appender-ref ref="commonAsync"/>
+        <appender-ref ref="errorAsync"/>
+        <appender-ref ref="consoleAppender"/>
     </root>
 </configuration>
