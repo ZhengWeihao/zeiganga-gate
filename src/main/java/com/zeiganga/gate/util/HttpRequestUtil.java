@@ -67,6 +67,8 @@ public class HttpRequestUtil {
             connection.setRequestProperty("accept", "*/*");
             connection.setRequestProperty("connection", "Keep-Alive");
             connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setRequestProperty("content-type", "charset=UTF-8");
+            connection.setRequestProperty("Accept-Charset", "UTF-8");
 
             // 设置requestProperties
             if (MapUtils.isNotEmpty(requestProperties)) {
@@ -81,7 +83,7 @@ public class HttpRequestUtil {
             // 建立实际的连接
             connection.connect();
             // 定义 BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result += line;
@@ -131,6 +133,7 @@ public class HttpRequestUtil {
             conn.setRequestProperty("connection", "Keep-Alive");
             conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
             conn.setRequestProperty("content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+            conn.setRequestProperty("Accept-Charset", "UTF-8");
             if (MapUtils.isNotEmpty(requestProperties)) {
                 Set<String> keys = requestProperties.keySet();
                 for (Iterator<String> it = keys.iterator(); it.hasNext();) {
@@ -145,7 +148,7 @@ public class HttpRequestUtil {
             out = new PrintWriter(conn.getOutputStream());
             out.print(params);
             out.flush();
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result += line;

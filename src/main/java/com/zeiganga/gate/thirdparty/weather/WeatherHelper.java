@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.zeiganga.gate.logger.CustomLogger;
+import com.zeiganga.gate.util.DateUtil;
+import com.zeiganga.gate.util.EncodeUtil;
 import com.zeiganga.gate.util.HttpRequestUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -20,6 +24,8 @@ import java.util.Map;
  * Time: 16:38
  */
 public class WeatherHelper {
+
+    private static final CustomLogger logger = CustomLogger.getLogger(WeatherHelper.class);
 
     private WeatherHelper() {
         super();
@@ -33,9 +39,10 @@ public class WeatherHelper {
             return null;
         }
 
-        String url = "https://www.sojson.com/open/api/weather/json.shtml";
-        String response = HttpRequestUtil.sendGet(url, "city=" + cityName);
+        String url = "https://www.sojson.com/open/api/weather/json.shtml?city=" + EncodeUtil.urlEncode(cityName);
+        String response = HttpRequestUtil.sendGet(url, "");
         if (StringUtils.isBlank(response)) {
+            logger.error("响应数据为空，url：{}", url);
             return null;
         }
 
@@ -44,6 +51,7 @@ public class WeatherHelper {
             JSONObject data = responseJson.getJSONObject("data");
             JSONArray forecast = data.getJSONArray("forecast");
             if (CollectionUtils.isEmpty(forecast)) {
+                logger.error("无法获取到天气数据，url：{}，response：{}", url, response);
                 return null;
             }
 
@@ -55,8 +63,9 @@ public class WeatherHelper {
                     return JSON.parseObject(jsonObject.toJSONString(), Weather.class);
                 }
             }
+            logger.error("找不到日期对应的天气数据，response：{}，date：{}", response, DateUtil.formatDate(date));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("解析天气异常，url：{}，response：{}", url, response, e);
         }
 
         return null;
@@ -66,7 +75,8 @@ public class WeatherHelper {
      * 解析contact为map
      */
     public static Map<String, Object> getContact(String contact, String defalutNull) {
-        if (StringUtils.isBlank(contact)) {// 解析contact
+        if (StringUtils.isBlank(contact)) {
+            // 解析contact
             return null;
         }
         try {
@@ -95,8 +105,4 @@ public class WeatherHelper {
         return null;
     }
 
-    public static void main(String[] args) {
-        Map<String, Object> contactMap = getContact("\t{\"address\":\"山西省阳泉市平定县打算发顺丰\",\"address_local\":\"打算发顺丰\",\"city\":\"16\",\"province\":\"4\",\"real_name\":\"第三方\",\"telephone\":\"13322221111\"}", "-");
-        System.out.println(JSON.toJSONString(contactMap));
-    }
 }
