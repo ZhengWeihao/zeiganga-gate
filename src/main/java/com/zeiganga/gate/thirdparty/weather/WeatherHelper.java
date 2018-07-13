@@ -14,6 +14,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -55,15 +56,18 @@ public class WeatherHelper {
                 return null;
             }
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd日EEEE");
-            String dateStr = sdf.format(date);
+
+            String dateStr = getDateStr(date);
             for (int i = 0; i < forecast.size(); i++) {
                 JSONObject jsonObject = forecast.getJSONObject(i);
-                if (dateStr.equals(jsonObject.getString("date"))) {
+                String getDate = jsonObject.getString("date");
+                boolean equals = dateStr.equals(getDate);
+                if (equals) {
                     return JSON.parseObject(jsonObject.toJSONString(), Weather.class);
                 }
+                logger.biz("匹配一次日期失败，getDate：{}，dateStr：{}", getDate, dateStr);
             }
-            logger.error("找不到日期对应的天气数据，response：{}，date：{}", response, DateUtil.formatDate(date));
+            logger.error("找不到日期对应的天气数据，response：{}，date：{}", response, dateStr);
         } catch (Exception e) {
             logger.error("解析天气异常，url：{}，response：{}", url, response, e);
         }
@@ -103,6 +107,61 @@ public class WeatherHelper {
         } catch (Exception e) {
         }
         return null;
+    }
+
+    /**
+     * 获取符合接口日期格式的字符串
+     */
+    private static String getDateStr(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+
+        int dayInt = c.get(Calendar.DAY_OF_MONTH);
+        int weekInt = c.get(Calendar.DAY_OF_WEEK) - 1;
+        return (dayInt < 10 ? "0" : "") + dayInt + "日星期" + getChineseNum(weekInt);
+    }
+
+    /**
+     * 阿拉伯数字转中文
+     */
+    private static String getChineseNum(int i) {
+        String sd = "";
+        switch (i) {
+            case 1:
+                sd = "一";
+                break;
+            case 2:
+                sd = "二";
+                break;
+            case 3:
+                sd = "三";
+                break;
+            case 4:
+                sd = "四";
+                break;
+            case 5:
+                sd = "五";
+                break;
+            case 6:
+                sd = "六";
+                break;
+            case 7:
+                sd = "七";
+                break;
+            case 8:
+                sd = "八";
+                break;
+            case 9:
+                sd = "九";
+                break;
+            default:
+                break;
+        }
+        return sd;
     }
 
 }
