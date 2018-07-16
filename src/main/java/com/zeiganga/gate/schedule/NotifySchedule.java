@@ -25,12 +25,22 @@ public class NotifySchedule {
     private static final CustomLogger logger = CustomLogger.getLogger(NotifySchedule.class);
 
     /**
-     * 测试通知
+     * 天气检查
      */
     @Scheduled(cron = "0 0 20 * * ?")
     public void weatherNotify() {
         logger.biz("进行次日天气检查");
         WeatherChecker.checkRanyWeather();
+    }
+
+    /**
+     * 月底提示
+     */
+    @Scheduled(cron = "0 0 16 L * ?")
+    public void monthlyNotify() {
+        String content = "一个月又过去咯，这个月的目标都实现了吗，下个月的目标又是什么呢？";
+        boolean atAll = true;
+        DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.EATING_GROUP_MACHINE_WEBHOOK, content, atAll);
     }
 
 }
