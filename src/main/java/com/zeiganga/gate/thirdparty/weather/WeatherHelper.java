@@ -149,14 +149,8 @@ public class WeatherHelper {
             case 6:
                 sd = "六";
                 break;
-            case 7:
-                sd = "七";
-                break;
-            case 8:
-                sd = "八";
-                break;
-            case 9:
-                sd = "九";
+            case 0:
+                sd = "日";
                 break;
             default:
                 break;
