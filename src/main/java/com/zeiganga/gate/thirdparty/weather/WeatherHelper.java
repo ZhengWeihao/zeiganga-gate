@@ -65,7 +65,6 @@ public class WeatherHelper {
                 if (equals) {
                     return JSON.parseObject(jsonObject.toJSONString(), Weather.class);
                 }
-                logger.biz("匹配一次日期失败，getDate：{}，dateStr：{}", getDate, dateStr);
             }
             logger.error("找不到日期对应的天气数据，response：{}，date：{}", response, dateStr);
         } catch (Exception e) {
