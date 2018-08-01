@@ -49,7 +49,7 @@ public class NotifySchedule {
 
         String content = "一个月又过去咯，这个月的目标都实现了吗，下个月的目标又是什么呢？";
         boolean atAll = true;
-        DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.EATING_GROUP_MACHINE_WEBHOOK, content, atAll);
+        DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.PRIVATE_GROUP_MACHINE_WEBHOOK, content, atAll);
         logger.biz("完成月底提醒");
     }
 

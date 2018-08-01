@@ -24,6 +24,7 @@ public class DingtalkMessageSender {
     private static final Logger logger = LoggerFactory.getLogger(DingtalkMessageSender.class);
 
     public static final String EATING_GROUP_MACHINE_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=a4c9f7382794f8c41505fb8fef03243382ec77f2f15ad1a2ec861ccfecef5b3b";// 吃饭小组测试机器人
+    public static final String PRIVATE_GROUP_MACHINE_WEBHOOK = "https://oapi.dingtalk.com/robot/send?access_token=87d2b589901840e8821219c5e75dc405c1ace4ebb4b1e72ab216b3db6b8dca68";// 私人小组测试机器人
 
     /**
      * 生成文本类消息
