@@ -47,10 +47,38 @@ public class NotifySchedule {
             return;
         }
 
-        String content = "一个月又过去咯，这个月的目标都实现了吗，下个月的目标又是什么呢？";
+        String content = "一个月过去了，任务都踏马完成了吗，还有心情出去玩吗？ヾ(￣▽￣)";
         boolean atAll = true;
         DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.PRIVATE_GROUP_MACHINE_WEBHOOK, content, atAll);
         logger.biz("完成月底提醒");
+    }
+
+    /**
+     * 睡觉提醒
+     */
+    @Scheduled(cron = "0 0 23 * * ?")
+    public void sleepNotify() {
+        logger.biz("开始睡眠提醒");
+
+        String content = "好睡觉了，就是这么一天天变丑的ヾ(=ﾟ･ﾟ=)ﾉ";
+        boolean atAll = true;
+        DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.PRIVATE_GROUP_MACHINE_WEBHOOK, content, atAll);
+
+        logger.biz("完成睡眠提醒");
+    }
+
+    /**
+     * 起床提醒
+     */
+    @Scheduled(cron = "0 30 7 * * ?")
+    public void getupNotify() {
+        logger.biz("开始起床提醒");
+
+        String content = "晚上么不睡，白天么不起，你真棒！(๑•̀ㅂ•́)و✧";
+        boolean atAll = true;
+        DingtalkMessageSender.sendSimpleMessage(DingtalkMessageSender.PRIVATE_GROUP_MACHINE_WEBHOOK, content, atAll);
+
+        logger.biz("完成起床提醒");
     }
 
 }
