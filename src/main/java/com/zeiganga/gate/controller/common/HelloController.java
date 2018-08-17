@@ -2,7 +2,6 @@ package com.zeiganga.gate.controller.common;
 
 import com.zeiganga.gate.enums.HttpResponseEnum;
 import com.zeiganga.gate.logger.CustomLogger;
-import com.zeiganga.gate.schedule.NotifySchedule;
 import com.zeiganga.gate.thirdparty.weather.WeatherChecker;
 import com.zeiganga.gate.vo.common.HttpResponseVO;
 import org.springframework.stereotype.Controller;
